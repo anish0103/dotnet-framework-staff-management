@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h4 id="pageheading" class="m-0">Dashboard</h4>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li id="pagename" class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<div class="container-fluid">
+    <div id="loadingContainer" style="height: 75vh; filter: blur(5px);"></div>
+    <div id="dynamicContainer"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        openForm("DashBoard/DashboardView", "DashBoard")
+    })
+</script>
+

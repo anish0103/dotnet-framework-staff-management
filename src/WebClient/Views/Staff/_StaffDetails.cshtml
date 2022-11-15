@@ -1,0 +1,148 @@
+﻿@model WebModel.Staff
+
+<div class="card card-gray card-outline">
+    <div class="card-header">
+        <h3 class="card-title">Staff Details</h3>
+    </div>
+    <form method="post" id="formStaffDetails">
+        @*@Html.HiddenFor(p => p.id, new { @id = "id" })*@
+        <div hidden id="id">
+            @Model.id
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Name</label>
+                                @Html.TextBoxFor(p => p.name, new { @class = "form-control", @placeholder = "Enter Name", @name = "name" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                @Html.TextBoxFor(p => p.phoneno, new { @class = "form-control", @placeholder = "Enter Phone Number", @name = "phoneno" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Department</label>
+                                @Html.TextBoxFor(p => p.department, new { @class = "form-control", @placeholder = "Enter Department", @name = "department" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="button" id="submitBtn" class="btn btn-info ml-2 mr-3">Submit</button>
+                        <button type="button" id="closeBtn" class="btn btn-secondary">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#closeBtn").click(function () {
+            openForm("Staff/StaffList", "Staff List")
+        })
+
+        $("#formStaffDetails").validate({
+            rules: {
+                name: { required: true },
+                department: { required: true },
+                phoneno: { required: true },
+            },
+            message: {
+                name: { required: "Please Enter Name" },
+                department: { required: "Please Enter Department" },
+                phoneno: { required: "Please Enter Some Phone Number" },
+            }
+        })
+
+        //if ($("#id").text()) {
+        //    var disabled = $("#frmEmployeeDetails").find(':input:disabled').removeAttr('disabled');
+        //    formObj = $("#frmEmployeeDetails").serialize();
+        //    disabled.attr('disabled', 'disabled');
+        //    $("#submitBtn").text("Update")
+        //} else {
+        //    $("#submitBtn").text("Submit")
+        //}
+
+        if ($("#id").html() == 0) {
+            $("#submitBtn").text("Submit")
+        } else {
+            $("#submitBtn").text("Update")
+        }
+
+        $("#submitBtn").click(function () {
+            if ($("#formStaffDetails").valid()) {
+                if ($("#submitBtn").text() == "Submit") {
+                    Insert();
+                } else {
+                    Update();
+                }
+            } 
+        });
+
+        // Update
+        function Update() {
+            formObj = $("#formStaffDetails").serialize();
+            $.ajax({
+                url: 'Staff/UpdateRecord/' + $("#id").html(),
+                async: false,
+                dataType: 'JSON',
+                data: formObj,
+                traditional: true,
+                type: 'POST',
+                success: function (result) {
+                    if (result == "OK") {
+                        alert("Updated successfully!");
+                        openForm("Staff/StaffList", "Staff List");
+                    } else {
+                        alert("Something went wrong!");
+                    }
+                },
+                error: function (err) {
+                    alert(err.responseText)
+                }
+            })
+        }
+
+        // Create
+        function Insert() {
+            formObj = $("#formStaffDetails").serialize();
+            $.ajax({
+                url: 'Staff/InsertRecord/',
+                async: false,
+                dataType: 'JSON',
+                data: formObj,
+                traditional: true,
+                type: 'POST',
+                success: function (result) {
+                    if (result == "OK") {
+                        alert("Created successfully!");
+                        openForm("Staff/StaffList", "Staff List");
+                    } else {
+                        alert("Something went wrong!");
+                    }
+                },
+                error: function (err) {
+                    alert(err.responseText)
+                }
+            })
+        }
+
+    })
+</script>
+
+<style>
+    .error {
+        color: red
+    }
+</style>

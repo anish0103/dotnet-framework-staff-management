@@ -1,0 +1,85 @@
+﻿<div class="card card-gray card-outline">
+    <div class="card-header">
+        <button id="createBtn" class="btn btn-success btn-sm">Create New</button>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="stafflisttbl"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "Staff/GetStaffList",
+            async: false,
+            dataType: 'JSON',
+            traditional: true,
+            type: 'POST',
+            success: function (content) {
+                $.each(content, function (index, data) {
+                    var row = $(
+                        "<tr>" +
+                        "<td hidden>" + data.id + "</td>" +
+                        "<td>" + (index+1) + "</td>" +
+                        "<td>" + data.name + "</td>" +
+                        "<td>" + data.phoneno + "</td>" +
+                        "<td>" + data.department + "</td>" +
+                        "<td><button id='editBtn' class='btn btn-sm btn-warning mx-2'>Edit</button><button id='deleteBtn' class='btn btn-sm btn-danger mx-2'>Delete</button></td>" +
+                        "</tr>"
+                    )
+                    $("#stafflisttbl").append(row);
+                })
+            }
+        })
+
+        $("#createBtn").click(function () {
+            openForm("Staff/StaffDetails", "Add New Staff")
+        })
+
+        // Edit
+        $("#stafflisttbl").on('click', '#editBtn', function () {
+            var row = $(this).closest('tr')
+            var id = row.find('td').eq(0).html()
+            openForm('Staff/StaffDetails/' + id, 'Edit Staff Details')
+        })
+
+        // Delete
+        $("#stafflisttbl").on('click', '#deleteBtn', function () {
+            var row = $(this).closest('tr')
+            var id = row.find('td').eq(0).html()
+            $.ajax({
+                url: 'Staff/DeleteRecord/' + id,
+                async: false,
+                dataType: 'JSON',
+                data: '{ id = ' + id + '}',
+                traditional: true,
+                type: 'POST',
+                success: function (result) {
+                    console.log(result)
+                    if (result == "OK") {
+                        row.remove();
+                        alert("Staff is deleted successfully!");
+                    } else {
+                        alert("Something went wrong!");
+                        openForm("Staff/StaffList", "Staff List");
+                    }
+                },
+                error: function (err) {
+                    alert(err.responseText)
+                }
+            })
+        })
+
+    })
+</script>
