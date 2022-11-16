@@ -1,16 +1,24 @@
-# ASP.NET FRAMEWORK
+# STAFF MANAGEMENT SYSTEM
 
-The Solution of this project contains 3 things 
+The Solution of this project contains 3 files 
 
 WebClient (Frontend) \
 WebAPI (Backend) \
 Class Library (Models) 
 
-# FEATURES
+# TOOLS AND TECHNOLOGY USED
 
-It has SPA functionality made using jQuery
+ASP.NET Framework \
+AdminLTE \
+jQuery \
+Entity Framework \
+SQL Server
 
-The project includes the following operations on staff information
+# FEATURES AND FUNCTIONALITY
+
+It is a Single Page Application
+
+The project includes the following operations
 
 C (Create) \
 R (Read) \
